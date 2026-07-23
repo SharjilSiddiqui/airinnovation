@@ -99,7 +99,7 @@ export default function Hero() {
 
       {/* Hero Content */}
 
-      <div className="relative z-20 flex h-full items-center justify-center px-8">
+      <div className="relative z-20 flex h-full items-center justify-center px-8 translate-y-12">
         <div className="max-w-6xl text-center text-white">
           <p className="hero-subtitle mb-8 text-xs uppercase tracking-[0.55em] text-white/70">
             INTERACTIVE ARCHITECTURAL EXPERIENCES

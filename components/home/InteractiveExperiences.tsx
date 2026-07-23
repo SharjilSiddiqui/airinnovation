@@ -12,28 +12,28 @@ const experiences = [
     title: "Interactive\nEnvironments",
     description:
       "Step inside your project before it's built. Explore every room, every angle and every detail in real time.",
-    image: "/images/experience-1.jpg",
+    image: "/images/experience-1.png",
   },
   {
     number: "02",
     title: "Real-Time\nConfiguration",
     description:
       "Change materials, lighting, furniture and finishes instantly. No waiting. No guesswork.",
-    image: "/images/experience-2.jpg",
+    image: "/images/experience-2.png",
   },
   {
     number: "03",
     title: "Client\nExperience",
     description:
       "Turn presentations into conversations where clients interact, explore and decide with confidence.",
-    image: "/images/experience-3.jpg",
+    image: "/images/experience-3.png",
   },
   {
     number: "04",
     title: "Immersive\nTechnology",
     description:
       "Desktop, mobile or VR. Experience architecture through powerful real-time technology.",
-    image: "/images/experience-4.jpg",
+    image: "/images/experience-4.png",
   },
 ];
 
@@ -49,17 +49,19 @@ export default function InteractiveExperiences() {
 
       const panels = gsap.utils.toArray(".experience-panel");
 
+      const scrollLength = window.innerWidth * (panels.length - 1);
+
       gsap.to(slider, {
-        xPercent: -100 * (panels.length - 1),
+        x: -scrollLength,
         ease: "none",
 
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top top",
-          end: () => "+=" + slider.offsetWidth,
-          scrub: 1,
           pin: true,
-          anticipatePin: 1,
+          scrub: 1,
+          start: "top top",
+          end: `+=${scrollLength}`,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -84,7 +86,13 @@ export default function InteractiveExperiences() {
       id="services"
       className="relative bg-black text-white"
     >
-      <div ref={sliderRef} className="flex h-screen w-[400vw]">
+      <div
+        ref={sliderRef}
+        className="flex h-screen"
+        style={{
+          width: `${experiences.length * 100}vw`,
+        }}
+      >
         {experiences.map((item) => (
           <div
             key={item.number}
@@ -116,12 +124,6 @@ export default function InteractiveExperiences() {
                 <p className="mt-10 text-lg leading-9 text-white/75">
                   {item.description}
                 </p>
-              </div>
-
-              <div className="hidden xl:block">
-                <div className="rounded-full border border-white/20 bg-white/10 px-8 py-5 backdrop-blur-xl">
-                  Interactive Experience
-                </div>
               </div>
             </div>
           </div>

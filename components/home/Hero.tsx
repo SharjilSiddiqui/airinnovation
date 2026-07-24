@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "@/lib/gsap";
+import useSectionTheme from "@/hooks/useSectionTheme";
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -73,6 +74,8 @@ export default function Hero() {
 
     return () => ctx.revert();
   }, []);
+
+  useSectionTheme(heroRef, "hero");
 
   return (
     <section ref={heroRef} className="relative h-screen overflow-hidden">

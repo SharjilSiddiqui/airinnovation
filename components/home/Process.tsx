@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useSectionTheme from "@/hooks/useSectionTheme";
 
 const steps = [
   {
@@ -39,6 +40,8 @@ const steps = [
 
 export default function Process() {
   const sectionRef = useRef<HTMLElement>(null);
+
+  useSectionTheme(sectionRef, "dark");
 
   useEffect(() => {
     const ctx = gsap.context(() => {

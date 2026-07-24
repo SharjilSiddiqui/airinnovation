@@ -3,6 +3,7 @@ import { Geist, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import IntroLoader from "@/components/layout/IntroLoader";
+import { NavbarProvider } from "@/providers/NavbarProvider";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -33,7 +34,9 @@ export default function RootLayout({
     >
       <body>
         <IntroLoader />
-        <SmoothScroll>{children}</SmoothScroll>
+        <NavbarProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </NavbarProvider>
       </body>
     </html>
   );

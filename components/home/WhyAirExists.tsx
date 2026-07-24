@@ -4,9 +4,12 @@ import { useEffect, useRef } from "react";
 
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useSectionTheme from "@/hooks/useSectionTheme";
 
 export default function WhyAirExists() {
   const sectionRef = useRef<HTMLElement>(null);
+
+  useSectionTheme(sectionRef, "light");
 
   useEffect(() => {
     const ctx = gsap.context(() => {

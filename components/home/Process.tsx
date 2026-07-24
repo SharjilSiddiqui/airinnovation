@@ -47,12 +47,12 @@ export default function Process() {
     const ctx = gsap.context(() => {
       const panels = gsap.utils.toArray<HTMLElement>(".process-panel");
 
-      panels.forEach((panel) => {
+      panels.forEach((panel, index) => {
         ScrollTrigger.create({
           trigger: panel,
           start: "top top",
           pin: true,
-          pinSpacing: false,
+          pinSpacing: index === panels.length - 1,
         });
       });
 

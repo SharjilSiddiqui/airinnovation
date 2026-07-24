@@ -2,8 +2,14 @@ import Image from "next/image";
 
 import Container from "@/components/common/Container";
 import Section from "@/components/common/Section";
+import { useRef } from "react";
+import useSectionTheme from "@/hooks/useSectionTheme";
 
 export default function About() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useSectionTheme(sectionRef, "light");
+
   return (
     <Section id="about" className="bg-[#F7F6F3]">
       <Container>

@@ -92,6 +92,7 @@ export default function Industries() {
         scrollTrigger: {
           trigger: sectionRef.current,
           pin: true,
+          pinSpacing: true,
           start: "top top",
           end: () => `+=${window.innerHeight * stepCount * 1.25}`,
           scrub: 0.6,

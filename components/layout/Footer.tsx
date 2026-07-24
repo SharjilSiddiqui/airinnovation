@@ -15,18 +15,18 @@ const explore = [
 ];
 
 const socials = [
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com",
-  },
+  // {
+  //   label: "LinkedIn",
+  //   href: "https://linkedin.com",
+  // },
   {
     label: "Instagram",
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/airinovation",
   },
-  {
-    label: "Behance",
-    href: "https://behance.net",
-  },
+  // {
+  //   label: "Behance",
+  //   href: "https://behance.net",
+  // },
 ];
 
 export default function Footer() {

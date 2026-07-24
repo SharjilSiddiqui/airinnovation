@@ -6,15 +6,15 @@ import { useNavbar } from "@/providers/NavbarProvider";
 const navLinks = [
   {
     label: "Step In",
+    href: "#hero",
+  },
+  {
+    label: "Inside the Studio",
     href: "#about",
   },
   {
     label: "Experiences",
     href: "#projects",
-  },
-  {
-    label: "Industries",
-    href: "#industries",
   },
   {
     label: "Collaborate",

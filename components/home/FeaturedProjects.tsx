@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import gsap from "@/lib/gsap";
 
@@ -56,6 +57,17 @@ export default function FeaturedProjects() {
             start: "top 70%",
           },
         });
+      });
+
+      gsap.from(".project-cta", {
+        opacity: 0,
+        y: 60,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".project-cta",
+          start: "top 85%",
+        },
       });
     }, sectionRef);
 
@@ -116,6 +128,53 @@ export default function FeaturedProjects() {
             </div>
           </article>
         ))}
+      </div>
+      {/* Explore All Experiences */}
+      <div className="project-cta mx-auto mt-32 flex justify-center px-10">
+        <Link
+          href="/projects"
+          className="
+      group
+      inline-flex
+      items-center
+      gap-4
+      rounded-full
+      border
+      border-white/20
+      bg-white/[0.03]
+      px-10
+      py-5
+      text-sm
+      font-medium
+      uppercase
+      tracking-[0.3em]
+      text-white
+      backdrop-blur-sm
+      transition-all
+      duration-500
+      hover:-translate-y-1
+      hover:border-white
+      hover:bg-white
+      hover:text-black
+    "
+        >
+          <span>Explore Experiences</span>
+
+          <svg
+            className="transition-transform duration-500 group-hover:translate-x-1"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12H19" />
+            <path d="M13 6L19 12L13 18" />
+          </svg>
+        </Link>
       </div>
     </section>
   );

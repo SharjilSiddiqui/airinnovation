@@ -4,6 +4,7 @@ import Hero from "@/components/home/Hero";
 import WhyAirExists from "@/components/home/WhyAirExists";
 import InteractiveExperiences from "@/components/home/InteractiveExperiences";
 import Process from "@/components/home/Process";
+import FeaturedProjects from "@/components/home/FeaturedProjects";
 // import About from "@/components/home/About";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <WhyAirExists />
         <InteractiveExperiences />
         <Process />
+        <FeaturedProjects />
         {/* <About /> */}
       </main>
     </>

@@ -101,10 +101,6 @@ export default function Hero() {
 
       <div className="relative z-20 flex h-full items-center justify-center px-8 translate-y-12">
         <div className="max-w-6xl text-center text-white">
-          <p className="hero-subtitle mb-8 text-xs uppercase tracking-[0.55em] text-white/70">
-            INTERACTIVE ARCHITECTURAL EXPERIENCES
-          </p>
-
           <h1 className="hero-title font-serif text-6xl leading-[0.9] md:text-8xl xl:text-[9rem]">
             <span className="block overflow-hidden">Experience.</span>
 
@@ -112,6 +108,10 @@ export default function Hero() {
 
             <span className="block overflow-hidden">Decide.</span>
           </h1>
+
+          <p className="hero-subtitle mb-8 mt-8 text-xs uppercase tracking-[0.55em] text-white/70">
+            INTERACTIVE ARCHITECTURAL EXPERIENCES
+          </p>
 
           <p className="hero-text mx-auto mt-12 max-w-2xl text-lg leading-8 text-white/75 md:text-xl">
             We transform static architectural designs into immersive real-time

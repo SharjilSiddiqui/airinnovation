@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo, useState, ReactNode } from "react";
 
-type NavbarTheme = "hero" | "light" | "dark";
+export type NavbarTheme = "hero" | "light" | "dark";
 
 type NavbarContextType = {
   theme: NavbarTheme;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import gsap from "@/lib/gsap";
@@ -10,6 +10,9 @@ import { useNavbar } from "@/providers/NavbarProvider";
 
 export default function LandingScene() {
   const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const [showVideo, setShowVideo] = useState(false);
 
   const { setNavbarVisible } = useNavbar();
 
@@ -29,7 +32,28 @@ export default function LandingScene() {
       },
     });
 
+    const timer = setTimeout(() => {
+      setShowVideo(true);
+
+      videoRef.current?.play();
+
+      gsap.fromTo(
+        videoRef.current,
+        {
+          opacity: 0,
+          scale: 1.05,
+        },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 2,
+          ease: "power3.out",
+        },
+      );
+    }, 3500);
+
     return () => {
+      clearTimeout(timer);
       trigger.kill();
     };
   }, [setNavbarVisible]);
@@ -42,9 +66,9 @@ export default function LandingScene() {
     >
       {/* Background Video */}
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover opacity-0"
         src="/videos/intro.mp4"
-        autoPlay
         muted
         loop
         playsInline

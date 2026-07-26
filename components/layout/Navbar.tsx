@@ -23,14 +23,33 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const { theme } = useNavbar();
+  const { theme, navbarVisible } = useNavbar();
 
   const isHero = theme === "hero";
   const isLight = theme === "light";
   const isDark = theme === "dark";
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[100] flex justify-center pt-5 transition-all duration-700 ease-out">
+    <header
+      className={`
+    fixed
+    inset-x-0
+    top-0
+    z-[100]
+    flex
+    justify-center
+    pt-5
+    transition-all
+    duration-700
+    ease-out
+
+    ${
+      navbarVisible
+        ? "translate-y-0 opacity-100"
+        : "-translate-y-8 opacity-0 pointer-events-none"
+    }
+  `}
+    >
       <div
         className={`
           flex

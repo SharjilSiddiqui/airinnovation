@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 
+import LandingScene from "@/components/landing/LandingScene";
 import Hero from "@/components/home/Hero";
 import WhyAirExists from "@/components/home/WhyAirExists";
 import InteractiveExperiences from "@/components/home/InteractiveExperiences";
@@ -12,20 +13,19 @@ import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <>
+    <main>
+      <LandingScene />
+
       <Navbar />
 
-      <main>
-        <Hero />
-        <WhyAirExists />
-        <InteractiveExperiences />
-        <Process />
-        <FeaturedProjects />
-        <Industries />
-        <CTA />
-        <Footer />
-        {/* <About /> */}
-      </main>
-    </>
+      <Hero />
+      <WhyAirExists />
+      <InteractiveExperiences />
+      <Process />
+      <FeaturedProjects />
+      <Industries />
+      <CTA />
+      <Footer />
+    </main>
   );
 }

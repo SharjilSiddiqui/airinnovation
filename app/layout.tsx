@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/layout/SmoothScroll";
-import IntroLoader from "@/components/layout/IntroLoader";
 import { NavbarProvider } from "@/providers/NavbarProvider";
 
 const geist = Geist({
@@ -33,7 +32,6 @@ export default function RootLayout({
       className={`${geist.variable} ${cormorant.variable} scroll-smooth`}
     >
       <body>
-        <IntroLoader />
         <NavbarProvider>
           <SmoothScroll>{children}</SmoothScroll>
         </NavbarProvider>

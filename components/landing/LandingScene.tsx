@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 import gsap from "@/lib/gsap";
@@ -10,9 +10,10 @@ import { useNavbar } from "@/providers/NavbarProvider";
 
 export default function LandingScene() {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [showVideo, setShowVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
 
   const { setNavbarVisible } = useNavbar();
 
@@ -23,38 +24,78 @@ export default function LandingScene() {
       trigger: sectionRef.current,
       start: "bottom 85%",
 
-      onLeave: () => {
-        setNavbarVisible(true);
-      },
-
-      onEnterBack: () => {
-        setNavbarVisible(false);
-      },
+      onLeave: () => setNavbarVisible(true),
+      onEnterBack: () => setNavbarVisible(false),
     });
 
-    const timer = setTimeout(() => {
-      setShowVideo(true);
+    // Initial states
+    gsap.set(videoRef.current, {
+      opacity: 0,
+      scale: 1.05,
+    });
 
+    gsap.set(logoRef.current, {
+      opacity: 0,
+      y: 35,
+      scale: 0.92,
+      filter: "blur(10px)",
+    });
+
+    gsap.set(subtitleRef.current, {
+      opacity: 0,
+      y: 18,
+    });
+
+    // Intro animation
+    const tl = gsap.timeline();
+
+    tl.to(logoRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 1.8,
+      ease: "power4.out",
+    });
+
+    tl.to(
+      subtitleRef.current,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: "power3.out",
+      },
+      "-=0.9",
+    );
+
+    // Reveal background video after delay
+    const timer = setTimeout(() => {
       videoRef.current?.play();
 
-      gsap.fromTo(
-        videoRef.current,
-        {
-          opacity: 0,
-          scale: 1.05,
-        },
-        {
+      gsap
+        .timeline()
+        .to(videoRef.current, {
           opacity: 1,
           scale: 1,
-          duration: 2,
+          duration: 2.2,
           ease: "power3.out",
-        },
-      );
+        })
+        .to(
+          logoRef.current,
+          {
+            filter: "drop-shadow(0 0 24px rgba(255,255,255,.18))",
+            duration: 2,
+            ease: "power2.out",
+          },
+          "<",
+        );
     }, 3500);
 
     return () => {
       clearTimeout(timer);
       trigger.kill();
+      tl.kill();
     };
   }, [setNavbarVisible]);
 
@@ -67,7 +108,7 @@ export default function LandingScene() {
       {/* Background Video */}
       <video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover opacity-0"
+        className="absolute inset-0 h-full w-full object-cover"
         src="/videos/intro.mp4"
         muted
         loop
@@ -78,27 +119,32 @@ export default function LandingScene() {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/45" />
 
-      {/* Soft Radial Vignette */}
+      {/* Cinematic Vignette */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.45) 100%)",
+            "radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.55) 100%)",
         }}
       />
 
       {/* Content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-        <Image
-          src="/logos/air-white.png"
-          alt="AIR Innovation"
-          width={320}
-          height={130}
-          priority
-          className="w-[220px] md:w-[320px]"
-        />
+        <div ref={logoRef}>
+          <Image
+            src="/logos/air-white.png"
+            alt="AIR Innovation"
+            width={340}
+            height={140}
+            priority
+            className="w-[220px] md:w-[340px]"
+          />
+        </div>
 
-        <p className="mt-8 max-w-xl text-xs uppercase tracking-[0.55em] text-white/70 md:text-sm">
+        <p
+          ref={subtitleRef}
+          className="mt-8 max-w-xl text-xs uppercase tracking-[0.55em] text-white/70 md:text-sm"
+        >
           Immersive Architectural Experiences
         </p>
       </div>

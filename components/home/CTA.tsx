@@ -119,21 +119,21 @@ export default function CTA() {
         className="relative z-20 mx-auto flex max-w-7xl flex-col items-center px-6 text-center"
       >
         <p className="cta-eyebrow mb-6 sm:mb-8 text-xs uppercase tracking-[0.55em] text-white/40 font-mono">
-          Let's Build The Future
+          The Future of Interactive Architecture
         </p>
 
         <h2 className="cta-heading max-w-5xl font-serif text-4xl sm:text-6xl md:text-7xl xl:text-[6rem] font-light leading-[0.95] tracking-tight text-white">
-          Ready to build
+          See Less
           <br />
           <span className="italic font-normal text-white/90">
-            something unforgettable?
+            Experience More
           </span>
         </h2>
 
         <p className="cta-text mt-8 sm:mt-10 max-w-2xl text-base sm:text-lg md:text-xl leading-relaxed sm:leading-8 text-white/60 font-light tracking-wide">
-          From immersive architecture to interactive digital experiences, AIR
-          helps visionary teams transform ambitious ideas into unforgettable
-          realities.
+          Whether it's a luxury residence, commercial development, hospitality
+          project, we craft stunning renders, immersive VR environments, and
+          cinematic animations that help ideas feel real before they're built.
         </p>
 
         {/* CTA Button Wrapper - Ensured Relative Z-Index Layering */}

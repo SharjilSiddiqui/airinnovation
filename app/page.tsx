@@ -23,7 +23,7 @@ export default function Home() {
       <InteractiveExperiences />
       <Process />
       <FeaturedProjects />
-      <Industries />
+      {/* <Industries /> */}
       <CTA />
       <Footer />
     </main>

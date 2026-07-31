@@ -15,18 +15,22 @@ const explore = [
 ];
 
 const socials = [
-  // {
-  //   label: "LinkedIn",
-  //   href: "https://linkedin.com",
-  // },
   {
     label: "Instagram",
     href: "https://www.instagram.com/airinovation",
   },
-  // {
-  //   label: "Behance",
-  //   href: "https://behance.net",
-  // },
+  {
+    label: "LinkedIn",
+    href: "https://linkedin.com",
+  },
+  {
+    label: "Youtube",
+    href: "https://youtube.com",
+  },
+  {
+    label: "Twitter",
+    href: "https://twitter.com",
+  },
 ];
 
 export default function Footer() {
@@ -104,7 +108,7 @@ export default function Footer() {
               </p>
 
               <h2 className="max-w-3xl font-serif text-5xl font-light leading-[0.95] md:text-7xl">
-                Designing
+                Immersive
                 <br />
                 experiences
                 <br />
@@ -112,9 +116,12 @@ export default function Footer() {
               </h2>
 
               <p className="mt-10 max-w-lg text-lg leading-8 text-white/55">
-                We create immersive architectural experiences through
-                storytelling, interaction, and technology—helping visionary
-                brands present spaces before they're built.
+                We craft architectural visualizations, immersive VR
+                walkthroughs, and cinematic animations that bring unbuilt spaces
+                to life through storytelling, interaction, and cutting-edge
+                technology. Helping architects, designers, developers, and
+                visionary brands present their ideas with clarity, emotion, and
+                impact - long before it begins.
               </p>
             </div>
 
@@ -154,13 +161,13 @@ export default function Footer() {
                     href="mailto:hello@airinnovation.com"
                     className="block text-lg text-white/70 transition hover:text-white"
                   >
-                    hello@airinnovation.com
+                    gm.rartist@outlook.com
                   </a>
 
                   <p className="text-white/50">
-                    Nashik
+                    Nashik, India
                     <br />
-                    India
+                    Mumbai, India
                   </p>
 
                   <div className="flex flex-col gap-4 pt-4">

@@ -38,13 +38,11 @@ export default function WhyAirExists() {
       <div className="story-block flex min-h-screen items-center justify-center px-8">
         <div className="max-w-6xl">
           <p className="mb-10 text-xs uppercase tracking-[0.45em] text-neutral-500">
-            WHY AIR EXISTS
+            AIR EXISTS
           </p>
 
           <h2 className="font-serif text-6xl leading-[1] md:text-8xl">
-            We didn't start by building software.
-            <br />
-            We started by solving confusion.
+            Because certainty Solves Confusion
           </h2>
         </div>
       </div>

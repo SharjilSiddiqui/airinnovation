@@ -81,7 +81,7 @@ export default function FeaturedProjects() {
     >
       <div className="mx-auto mb-32 max-w-7xl px-10">
         <p className="text-sm uppercase tracking-[0.45em] text-white/40">
-          FEATURED EXPERIENCES
+          EXPERIENCES
         </p>
 
         <h2 className="mt-8 max-w-5xl font-serif text-6xl leading-tight md:text-8xl">

@@ -78,7 +78,11 @@ export default function Hero() {
   useSectionTheme(heroRef, "hero");
 
   return (
-    <section ref={heroRef} className="relative h-screen overflow-hidden">
+    <section
+      id="hero"
+      ref={heroRef}
+      className="relative h-screen overflow-hidden"
+    >
       {/* Background Video */}
 
       <div className="hero-video absolute inset-0">

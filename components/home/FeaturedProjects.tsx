@@ -174,7 +174,7 @@ export default function FeaturedProjects() {
         </p>
 
         <h2 className="mt-8 max-w-5xl font-serif text-6xl leading-[0.95] md:text-8xl">
-          Every Experience reflects
+          Every experience reflects
           <br />
           what AIR stands for
         </h2>
@@ -242,8 +242,21 @@ export default function FeaturedProjects() {
 
         {/* RIGHT SIDEBAR */}
 
-        <div className="col-span-12 flex flex-col justify-between rounded-[42px] border border-white/10 bg-white/[0.02] backdrop-blur-xl lg:col-span-4">
-          <div>
+        <div
+          className="
+    col-span-12
+    lg:col-span-4
+    flex
+    h-[640px]
+    flex-col
+    rounded-[42px]
+    border
+    border-white/10
+    bg-white/[0.02]
+    backdrop-blur-xl
+  "
+        >
+          <div className="flex-1 overflow-hidden">
             {projects.map((project, index) => {
               const active = activeProject.id === project.id;
 
@@ -340,27 +353,26 @@ export default function FeaturedProjects() {
                     {project.title}
                   </h4>
 
-                  <p
+                  <div
                     className={`
-                      mt-4
-                      text-sm
-                      leading-7
-                      transition-all
-                      duration-500
-
-                      ${active ? "text-white/70" : "text-white/35"}
-                    `}
+    overflow-hidden
+    transition-all
+    duration-500
+    ${active ? "max-h-10 opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"}
+  `}
                   >
-                    {project.location}
-                  </p>
+                    <p className="text-sm leading-7 text-white/70">
+                      {project.location}
+                    </p>
+                  </div>
                 </button>
               );
             })}
           </div>
           {/* CTA */}
 
-          <div className="projects-cta p-8">
-            <div className="mb-8 h-px w-full bg-white/10" />
+          <div className="projects-cta mt-auto p-8">
+            <div className="mb-6 h-px w-full bg-white/10" />
 
             <p className="mb-6 text-xs uppercase tracking-[0.4em] text-white/35">
               Discover More

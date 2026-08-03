@@ -149,17 +149,54 @@ export default function LandingScene() {
         </p>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-12 left-1/2 z-20 -translate-x-1/2">
-        <div className="flex flex-col items-center">
-          <span className="mb-4 text-[11px] uppercase tracking-[0.45em] text-white/50">
-            Scroll
+      {/* Explore Button */}
+      <div className="absolute bottom-14 left-1/2 z-20 -translate-x-1/2">
+        <button
+          onClick={() => {
+            document
+              .getElementById("hero")
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="
+group
+inline-flex
+items-center
+gap-4
+rounded-full
+border
+border-white/30
+bg-black/20
+px-8
+py-4
+text-white
+backdrop-blur-xl
+transition-all
+duration-500
+hover:-translate-y-1
+hover:border-white
+hover:bg-white
+hover:text-black
+"
+        >
+          <span className="text-xs font-medium uppercase tracking-[0.35em]">
+            Explore
           </span>
 
-          <div className="flex h-14 w-8 justify-center rounded-full border border-white/30">
-            <div className="mt-2 h-2 w-2 animate-bounce rounded-full bg-white" />
-          </div>
-        </div>
+          <svg
+            className="transition-transform duration-500 group-hover:translate-x-1"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12H19" />
+            <path d="M13 6L19 12L13 18" />
+          </svg>
+        </button>
       </div>
     </section>
   );

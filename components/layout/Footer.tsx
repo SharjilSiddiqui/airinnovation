@@ -7,6 +7,13 @@ import Container from "@/components/common/Container";
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import {
+  FaInstagram,
+  FaLinkedinIn,
+  FaYoutube,
+  FaXTwitter,
+} from "react-icons/fa6";
+
 const explore = [
   { label: "Step In", href: "/" },
   { label: "Inside the Studio", href: "/about" },
@@ -16,19 +23,23 @@ const explore = [
 
 const socials = [
   {
+    icon: FaInstagram,
     label: "Instagram",
     href: "https://www.instagram.com/airinovation",
   },
   {
+    icon: FaLinkedinIn,
     label: "LinkedIn",
     href: "https://linkedin.com",
   },
   {
-    label: "Youtube",
+    icon: FaYoutube,
+    label: "YouTube",
     href: "https://youtube.com",
   },
   {
-    label: "Twitter",
+    icon: FaXTwitter,
+    label: "X",
     href: "https://twitter.com",
   },
 ];
@@ -108,11 +119,13 @@ export default function Footer() {
               </p>
 
               <h2 className="max-w-3xl font-serif text-5xl font-light leading-[0.95] md:text-7xl">
+                Designing
+                <br />
                 Immersive
                 <br />
-                experiences
+                Experiences
                 <br />
-                people remember.
+                People Remember.
               </h2>
 
               <p className="mt-10 max-w-lg text-lg leading-8 text-white/55">
@@ -170,24 +183,45 @@ export default function Footer() {
                     Mumbai, India
                   </p>
 
-                  <div className="flex flex-col gap-4 pt-4">
-                    {socials.map((item) => (
-                      <a
-                        key={item.label}
-                        href={item.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="group flex items-center gap-3 text-white/60 transition hover:text-white"
-                      >
-                        <span className="-translate-x-3 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
-                          →
-                        </span>
+                  <div className="flex items-center gap-4 pt-6">
+                    {socials.map((item) => {
+                      const Icon = item.icon;
 
-                        <span className="transition-transform duration-500 group-hover:translate-x-1">
-                          {item.label}
-                        </span>
-                      </a>
-                    ))}
+                      return (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={item.label}
+                          className="
+          group
+          flex
+          h-12
+          w-12
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-white/10
+          bg-white/[0.03]
+          text-white/55
+          backdrop-blur-xl
+          transition-all
+          duration-500
+          hover:-translate-y-1
+          hover:border-white/30
+          hover:bg-white
+          hover:text-black
+        "
+                        >
+                          <Icon
+                            size={20}
+                            className="transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

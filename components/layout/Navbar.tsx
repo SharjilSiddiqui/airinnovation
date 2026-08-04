@@ -32,34 +32,30 @@ export default function Navbar() {
   return (
     <header
       className={`
-    fixed
-    inset-x-0
-    top-0
-    z-[100]
-    flex
-    justify-center
-    pt-5
-    transition-all
-    duration-700
-    ease-out
+        fixed
+        inset-x-0
+        top-0
+        z-[100]
+        transition-all
+        duration-700
 
-    ${
-      navbarVisible
-        ? "translate-y-0 opacity-100"
-        : "-translate-y-8 opacity-0 pointer-events-none"
-    }
-  `}
+        ${
+          navbarVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-8 opacity-0 pointer-events-none"
+        }
+      `}
     >
       <div
         className={`
+          mx-auto
           flex
-          h-14
-          w-[92%]
-          max-w-7xl
+          h-24
+          w-full
+          max-w-[1600px]
           items-center
           justify-between
-          rounded-[20px]
-          px-8
+          px-12
           transition-all
           duration-700
 
@@ -67,33 +63,36 @@ export default function Navbar() {
             isHero
               ? `
                 bg-transparent
+                border-b
+                border-white/15
               `
               : isLight
                 ? `
-                  border border-black/10
-                  bg-white/75
-                  backdrop-blur-3xl
-                  shadow-[0_8px_40px_rgba(0,0,0,.08)]
+                  bg-white/90
+                  border-b
+                  border-black/10
+                  backdrop-blur-xl
                 `
                 : `
-                  border border-white/10
-                  bg-black/35
-                  backdrop-blur-3xl
-                  shadow-[0_8px_40px_rgba(0,0,0,.35)]
+                  bg-black/65
+                  border-b
+                  border-white/10
+                  backdrop-blur-xl
                 `
           }
         `}
       >
         {/* Logo */}
 
-        <Link href="/" className="group flex items-center gap-4">
+        <Link href="/" className="group">
           <h1
             className={`
               font-serif
-              text-[32px]
+              text-[46px]
               leading-none
               transition-colors
               duration-500
+
               ${isHero || isDark ? "text-white" : "text-neutral-900"}
             `}
           >
@@ -103,22 +102,22 @@ export default function Navbar() {
 
         {/* Navigation */}
 
-        <nav className="hidden items-center gap-12 lg:flex">
+        <nav className="hidden items-center gap-16 lg:flex">
           {navLinks.map((item) => (
             <Link
               key={item.label}
               href={item.href}
               className={`
-                group
                 relative
                 text-[13px]
-                font-medium
-                tracking-[0.18em]
+                uppercase
+                tracking-[0.28em]
                 transition-colors
                 duration-300
+
                 ${
                   isHero || isDark
-                    ? "text-white/80 hover:text-white"
+                    ? "text-white/75 hover:text-white"
                     : "text-neutral-700 hover:text-black"
                 }
               `}
@@ -128,13 +127,29 @@ export default function Navbar() {
               <span
                 className={`
                   absolute
-                  -bottom-2
+                  -bottom-3
+                  left-0
+                  h-px
+                  w-0
+                  transition-all
+                  duration-500
+                  hover:w-full
+
+                  ${isHero || isDark ? "bg-white" : "bg-black"}
+                `}
+              />
+
+              <span
+                className={`
+                  absolute
+                  -bottom-3
                   left-0
                   h-px
                   w-0
                   transition-all
                   duration-500
                   group-hover:w-full
+
                   ${isHero || isDark ? "bg-white" : "bg-black"}
                 `}
               />
@@ -150,13 +165,14 @@ export default function Navbar() {
             group
             hidden
             items-center
-            gap-3
+            gap-4
             rounded-full
             border
-            px-6
-            py-2.5
+            px-8
+            py-3
             text-[13px]
-            tracking-[0.18em]
+            uppercase
+            tracking-[0.2em]
             transition-all
             duration-500
             lg:flex
@@ -164,7 +180,7 @@ export default function Navbar() {
             ${
               isHero
                 ? `
-                  border-white/15
+                  border-white/20
                   text-white
                   hover:bg-white
                   hover:text-black
@@ -209,8 +225,8 @@ export default function Navbar() {
         <button
           className={`
             flex
-            h-10
-            w-10
+            h-11
+            w-11
             items-center
             justify-center
             rounded-full
@@ -220,8 +236,8 @@ export default function Navbar() {
 
             ${
               isHero || isDark
-                ? "border-white/15 text-white"
-                : "border-black/15 text-black"
+                ? "border-white/20 text-white"
+                : "border-black/20 text-black"
             }
           `}
         >

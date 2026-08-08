@@ -7,6 +7,7 @@ import useSectionTheme from "@/hooks/useSectionTheme";
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
+  useSectionTheme(heroRef, "dark");
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -81,7 +82,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative h-screen overflow-hidden"
+      className="relative h-screen overflow-hidden bg-black text-white"
     >
       {/* Background Video */}
 

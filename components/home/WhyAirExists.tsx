@@ -9,7 +9,7 @@ import useSectionTheme from "@/hooks/useSectionTheme";
 export default function WhyAirExists() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useSectionTheme(sectionRef, "light");
+  useSectionTheme(sectionRef, "dark");
 
   useEffect(() => {
     const ctx = gsap.context(() => {

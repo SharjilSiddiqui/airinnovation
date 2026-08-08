@@ -8,10 +8,10 @@ import useSectionTheme from "@/hooks/useSectionTheme";
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
 
-  useSectionTheme(sectionRef, "light");
+  useSectionTheme(sectionRef, "dark");
 
   return (
-    <Section id="about" className="bg-[#F7F6F3]">
+    <Section id="about" className="bg-black text-white">
       <Container>
         <div className="mx-auto max-w-5xl text-center">
           <p className="mb-6 text-xs uppercase tracking-[0.45em] text-neutral-500">

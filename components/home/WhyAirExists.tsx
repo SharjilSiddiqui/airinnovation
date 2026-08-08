@@ -32,7 +32,7 @@ export default function WhyAirExists() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="bg-white text-black">
+    <section ref={sectionRef} id="about" className="bg-black text-white">
       {/* Block 1 */}
 
       <div className="story-block flex min-h-screen items-center justify-center px-8">

@@ -1,149 +1,87 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const projects = [
-  {
-    id: "01",
-    title: "Luxury Villa",
-    location: "Dubai, UAE",
-    category: "Residential",
-    description:
-      "A fully interactive luxury residence allowing clients to experience every room before construction begins.",
-    image: "/images/project-1.jpg",
-  },
-  {
-    id: "02",
-    title: "Corporate Headquarters",
-    location: "London, UK",
-    category: "Commercial",
-    description:
-      "Interactive office environments designed to communicate architecture, scale and atmosphere.",
-    image: "/images/project-2.jpg",
-  },
-  {
-    id: "03",
-    title: "Sales Experience Centre",
-    location: "Mumbai, India",
-    category: "Interactive Experience",
-    description:
-      "Immersive digital experiences helping developers sell projects before they're built.",
-    image: "/images/project-3.jpg",
-  },
-];
+const project = {
+  // id: "01",
+  title: "Luxury Villa",
+  location: "Dubai, UAE",
+  category: "Residential",
+  description:
+    "A fully interactive luxury residence allowing clients to experience every room before construction begins.",
+  image: "/images/project-1.jpg",
+};
 
 export default function FeaturedProjects() {
   const sectionRef = useRef<HTMLElement>(null);
 
+  const headingRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const metaRef = useRef<HTMLDivElement>(null);
-
-  const [activeProject, setActiveProject] = useState(projects[0]);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const changeProject = (index: number) => {
-    if (index === activeIndex) return;
-
-    const project = projects[index];
-
-    const tl = gsap.timeline();
-
-    tl.to(imageRef.current, {
-      opacity: 0,
-      scale: 1.05,
-      duration: 0.35,
-      ease: "power2.inOut",
-    });
-
-    tl.to(
-      [titleRef.current, descriptionRef.current, metaRef.current],
-      {
-        opacity: 0,
-        y: 25,
-        duration: 0.25,
-        stagger: 0.04,
-        ease: "power2.in",
-      },
-      "<",
-    );
-
-    tl.add(() => {
-      setActiveProject(project);
-      setActiveIndex(index);
-    });
-
-    tl.fromTo(
-      imageRef.current,
-      {
-        opacity: 0,
-        scale: 1.08,
-      },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.7,
-        ease: "power3.out",
-      },
-    );
-
-    tl.fromTo(
-      [titleRef.current, descriptionRef.current, metaRef.current],
-      {
-        opacity: 0,
-        y: 30,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        stagger: 0.08,
-        duration: 0.55,
-        ease: "power3.out",
-      },
-      "-=0.45",
-    );
-  };
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      gsap.from(".projects-heading", {
-        y: 80,
+      // Heading animation
+      gsap.from(headingRef.current, {
+        y: 60,
         opacity: 0,
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 75%",
+          start: "top 80%",
+          once: true,
         },
       });
 
-      gsap.from(".projects-layout", {
+      // Image animation
+      gsap.from(imageRef.current, {
         opacity: 0,
-        y: 80,
+        y: 60,
+        scale: 0.97,
         duration: 1.2,
+        delay: 0.15,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: ".projects-layout",
-          start: "top 75%",
+          trigger: sectionRef.current,
+          start: "top 70%",
+          once: true,
         },
       });
 
-      gsap.from(".projects-cta", {
+      // Details animation
+      gsap.from(detailsRef.current, {
         opacity: 0,
-        y: 50,
+        x: 50,
         duration: 1,
+        delay: 0.3,
         ease: "power3.out",
         scrollTrigger: {
-          trigger: ".projects-cta",
-          start: "top 90%",
+          trigger: sectionRef.current,
+          start: "top 70%",
+          once: true,
+        },
+      });
+
+      // CTA animation
+      gsap.from(ctaRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        delay: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          once: true,
         },
       });
     }, sectionRef);
@@ -151,284 +89,201 @@ export default function FeaturedProjects() {
     return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const next = (activeIndex + 1) % projects.length;
-      changeProject(next);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [activeIndex]);
-
   return (
     <section
       ref={sectionRef}
       id="projects"
-      className="bg-[#080808] py-40 text-white"
+      className="relative overflow-hidden bg-[#080808] text-white"
     >
-      {/* Header */}
-
-      <div className="projects-heading mx-auto mb-28 max-w-7xl px-8 lg:px-10">
-        <p className="text-sm uppercase tracking-[0.45em] text-white/35">
-          EXPERIENCES
-        </p>
-
-        <h2 className="mt-8 max-w-5xl font-serif text-6xl leading-[0.95] md:text-8xl">
-          Every experience reflects
-          <br />
-          what AIR stands for
-        </h2>
-
-        <p className="mt-8 max-w-2xl text-lg leading-8 text-white/55">
-          Explore a curated collection of interactive environments built to
-          redefine how architecture is presented.
-        </p>
+      {/* Background Glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-1/3 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-white/[0.025] blur-[180px]" />
       </div>
 
-      <div className="projects-layout mx-auto grid max-w-7xl grid-cols-12 gap-10 px-8 lg:px-10">
-        {/* LEFT SIDE */}
+      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-24 md:px-8 lg:px-10 lg:py-28">
+        {/* ========================================================= */}
+        {/* TOP WRITEUP */}
+        {/* ========================================================= */}
 
-        <div className="col-span-12 lg:col-span-8">
+        <div ref={headingRef} className="mb-12 lg:mb-14">
+          <p className="text-xs uppercase tracking-[0.45em] text-white/35">
+            EXPERIENCES
+          </p>
+
+          <h2 className="mt-7 max-w-5xl font-serif text-5xl font-light leading-[0.95] md:text-7xl lg:text-8xl">
+            Every experience reflects
+            <br />
+            what AIR stands for
+          </h2>
+
+          <p className="mt-7 max-w-2xl text-base leading-7 text-white/50 md:text-lg md:leading-8">
+            Explore a curated collection of interactive environments built to
+            redefine how architecture is presented.
+          </p>
+        </div>
+
+        {/* ========================================================= */}
+        {/* PROJECT CONTENT */}
+        {/* ========================================================= */}
+
+        <div className="grid grid-cols-12 gap-6 lg:gap-8">
+          {/* ======================================================= */}
+          {/* LEFT — IMAGE */}
+          {/* ======================================================= */}
+
           <div
             ref={imageRef}
-            className="relative overflow-hidden rounded-[42px] bg-neutral-900 shadow-2xl"
+            className="col-span-12 overflow-hidden rounded-[32px] bg-neutral-900 shadow-2xl lg:col-span-8 lg:rounded-[42px]"
           >
-            <div className="relative aspect-[16/10]">
+            <div className="relative aspect-[16/10] h-full w-full">
               <Image
-                src={activeProject.image}
-                alt={activeProject.title}
+                src={project.image}
+                alt={project.title}
                 fill
                 priority
-                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="object-cover transition-transform duration-1000 hover:scale-[1.02]"
               />
 
-              {/* overlays */}
+              {/* Image Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/10" />
 
-              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/20 to-transparent" />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />
-
-              {/* content */}
-
-              <div className="absolute bottom-0 left-0 right-0 p-10 md:p-14">
-                <div
-                  ref={metaRef}
-                  className="mb-5 flex items-center gap-3 text-xs uppercase tracking-[0.35em] text-white/55"
-                >
-                  <span>{activeProject.category}</span>
-
-                  <span className="h-px w-10 bg-white/25" />
-
-                  <span>{activeProject.location}</span>
+              {/* Image Corner Label */}
+              <div className="absolute left-6 top-6 md:left-8 md:top-8">
+                <div className="rounded-full border border-white/15 bg-black/20 px-4 py-2 backdrop-blur-md">
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-white/70">
+                    Featured Experience
+                  </span>
                 </div>
-
-                <h3
-                  ref={titleRef}
-                  className="max-w-3xl font-serif text-5xl leading-[0.95] md:text-7xl"
-                >
-                  {activeProject.title}
-                </h3>
-
-                <p
-                  ref={descriptionRef}
-                  className="mt-8 max-w-2xl text-lg leading-8 text-white/70"
-                >
-                  {activeProject.description}
-                </p>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* RIGHT SIDEBAR */}
+          {/* ======================================================= */}
+          {/* RIGHT — DETAILS */}
+          {/* ======================================================= */}
 
-        <div
-          className="
-    col-span-12
-    lg:col-span-4
-    flex
-    h-[640px]
-    flex-col
-    rounded-[42px]
-    border
-    border-white/10
-    bg-white/[0.02]
-    backdrop-blur-xl
-  "
-        >
-          <div className="flex-1 overflow-hidden">
-            {projects.map((project, index) => {
-              const active = activeProject.id === project.id;
+          <div
+            ref={detailsRef}
+            className="
+              col-span-12
+              flex
+              flex-col
+              rounded-[32px]
+              border
+              border-white/10
+              bg-white/[0.02]
+              backdrop-blur-xl
+              lg:col-span-4
+              lg:rounded-[42px]
+            "
+          >
+            {/* Project Details */}
+            <div className="flex-1 p-7 md:p-9 lg:p-10">
+              {/* Number */}
+              <div className="flex items-start justify-between">
+                {/* <span className="text-xs tracking-[0.45em] text-white/35">
+                  {project.id}
+                </span> */}
 
-              return (
-                <button
-                  key={project.id}
-                  onMouseEnter={() => changeProject(index)}
-                  onClick={() => changeProject(index)}
-                  className="
-                    group
-                    relative
-                    flex
-                    w-full
-                    flex-col
-                    border-b
-                    border-white/10
-                    px-8
-                    py-8
-                    text-left
-                    transition-all
-                    duration-500
-                  "
-                >
-                  {/* active line */}
+                <span className="text-xs uppercase tracking-[0.3em] text-white/30">
+                  Featured
+                </span>
+              </div>
 
-                  <span
-                    className={`
-                      absolute
-                      left-0
-                      top-0
-                      h-full
-                      w-[3px]
-                      transition-all
-                      duration-500
+              {/* Category */}
+              <p className="mt-14 text-[10px] uppercase tracking-[0.4em] text-white/35">
+                {project.category}
+              </p>
 
-                      ${active ? "bg-white" : "bg-transparent"}
-                    `}
-                  />
+              {/* Title */}
+              <h3 className="mt-5 font-serif text-4xl font-light leading-[0.95] md:text-5xl">
+                {project.title}
+              </h3>
 
-                  <div className="flex items-start justify-between">
-                    <span
-                      className={`
-                        text-xs
-                        tracking-[0.45em]
-                        transition-colors
+              {/* Location */}
+              <div className="mt-6 flex items-center gap-3">
+                <span className="h-px w-8 bg-white/25" />
 
-                        ${active ? "text-white" : "text-white/30"}
-                      `}
-                    >
-                      {project.id}
-                    </span>
+                <p className="text-sm tracking-[0.12em] text-white/50">
+                  {project.location}
+                </p>
+              </div>
 
-                    <svg
-                      className={`
-                        transition-all
-                        duration-500
+              {/* Divider */}
+              <div className="my-10 h-px w-full bg-white/10" />
 
-                        ${
-                          active
-                            ? "translate-x-0 opacity-100"
-                            : "-translate-x-3 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-                        }
-                      `}
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M5 12H19M13 6L19 12L13 18"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
+              {/* Description */}
+              <p className="text-base leading-7 text-white/55">
+                {project.description}
+              </p>
 
-                  <h4
-                    className={`
-                      mt-4
-                      font-serif
-                      text-3xl
-                      transition-all
-                      duration-500
+              {/* Small project statement */}
+              <p className="mt-8 text-sm leading-6 text-white/30">
+                Interactive architectural visualization designed to help clients
+                understand the space, atmosphere, and experience before
+                construction begins.
+              </p>
+            </div>
 
-                      ${
-                        active
-                          ? "text-white"
-                          : "text-white/55 group-hover:text-white"
-                      }
-                    `}
-                  >
-                    {project.title}
-                  </h4>
+            {/* ===================================================== */}
+            {/* DISCOVER MORE — PINNED TO BOTTOM */}
+            {/* ===================================================== */}
 
-                  <div
-                    className={`
-    overflow-hidden
-    transition-all
-    duration-500
-    ${active ? "max-h-10 opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"}
-  `}
-                  >
-                    <p className="text-sm leading-7 text-white/70">
-                      {project.location}
-                    </p>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-          {/* CTA */}
-
-          <div className="projects-cta mt-auto p-8">
-            <div className="mb-6 h-px w-full bg-white/10" />
-
-            <p className="mb-6 text-xs uppercase tracking-[0.4em] text-white/35">
-              Discover More
-            </p>
-
-            <Link
-              href="/projects"
-              className="
-                group
-                inline-flex
-                w-full
-                items-center
-                justify-between
-                rounded-full
-                border
-                border-white/15
-                bg-white/[0.03]
-                px-8
-                py-5
-                text-sm
-                uppercase
-                tracking-[0.25em]
-                text-white
-                transition-all
-                duration-500
-                hover:border-white
-                hover:bg-white
-                hover:text-black
-              "
+            <div
+              ref={ctaRef}
+              className="mt-auto border-t border-white/10 p-7 md:p-9 lg:p-10"
             >
-              <span>Explore Experiences</span>
+              <p className="mb-5 text-[10px] uppercase tracking-[0.4em] text-white/30">
+                Discover More
+              </p>
 
-              <svg
-                className="transition-transform duration-500 group-hover:translate-x-1"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
+              <Link
+                href="/projects"
+                className="
+                  group
+                  flex
+                  w-full
+                  items-center
+                  justify-between
+                  rounded-full
+                  border
+                  border-white/15
+                  bg-white/[0.03]
+                  px-6
+                  py-4
+                  transition-all
+                  duration-500
+                  hover:border-white
+                  hover:bg-white
+                  hover:text-black
+                  md:px-7
+                  md:py-5
+                "
               >
-                <path
-                  d="M5 12H19M13 6L19 12L13 18"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
+                <span className="text-xs uppercase tracking-[0.25em]">
+                  Explore Experiences
+                </span>
+
+                <svg
+                  className="transition-transform duration-500 group-hover:translate-x-1"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M5 12H19M13 6L19 12L13 18"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Background Decoration */}
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[500px] overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-white/[0.03] blur-[180px]" />
       </div>
     </section>
   );

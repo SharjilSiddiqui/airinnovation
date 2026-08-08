@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import useSectionTheme from "@/hooks/useSectionTheme";
 
 const experiences = [
   {
@@ -40,6 +41,8 @@ const experiences = [
 export default function InteractiveExperiences() {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useSectionTheme(sectionRef, "dark");
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -234,7 +237,7 @@ export default function InteractiveExperiences() {
     <section
       ref={sectionRef}
       id="services"
-      className="relative w-full h-screen text-white overflow-hidden select-none"
+      className="relative w-full h-screen bg-black text-white overflow-hidden select-none"
     >
       <div
         ref={containerRef}

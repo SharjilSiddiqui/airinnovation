@@ -160,7 +160,7 @@ export default function Navbar() {
         {/* CTA */}
 
         <Link
-          href="#contact"
+          href="/contact"
           className={`
             group
             hidden

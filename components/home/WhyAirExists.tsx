@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 
 import gsap from "@/lib/gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -93,10 +94,56 @@ export default function WhyAirExists() {
             imagination.
           </h2>
 
-          <p className="mx-auto mt-16 max-w-3xl text-xl leading-9 text-neutral-600">
+          <p className="mx-auto mt-16 max-w-3xl text-xl leading-9 text-white/60">
             AIR transforms concepts into interactive environments where ideas
             can be explored, modified and understood instantly.
           </p>
+
+          {/* Know More */}
+
+          <div className="mt-14 flex justify-center">
+            <Link
+              href="/about"
+              className="
+          group
+          inline-flex
+          items-center
+          gap-4
+          rounded-full
+          border
+          border-white/20
+          px-8
+          py-4
+          text-xs
+          uppercase
+          tracking-[0.3em]
+          text-white
+          transition-all
+          duration-500
+          hover:-translate-y-1
+          hover:border-white
+          hover:bg-white
+          hover:text-black
+        "
+            >
+              <span>Know More</span>
+
+              <svg
+                className="transition-transform duration-500 group-hover:translate-x-1"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M5 12H19" />
+                <path d="M13 6L19 12L13 18" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

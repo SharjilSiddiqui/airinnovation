@@ -3,6 +3,7 @@ import cors from "cors";
 
 import projectRoutes from "./routes/project.routes";
 import { serveVRProject } from "./controllers/vr.controller";
+import authRoutes from "./routes/auth.routes";
 
 const app = express();
 
@@ -36,6 +37,8 @@ app.get("/projects/:slug", (req, res) => {
 });
 
 app.get("/projects/:slug/*path", serveVRProject);
+
+app.use("/api/auth", authRoutes);
 
 app.use("/api/projects", projectRoutes);
 

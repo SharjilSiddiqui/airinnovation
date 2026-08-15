@@ -9,20 +9,28 @@ import {
   updateProject,
 } from "../controllers/project.controller";
 
+import { requireAuth } from "../middleware/auth";
 import { upload } from "../middleware/upload";
 
 const router = Router();
 
+// Public
 router.get("/", getProjects);
 
 router.get("/:slug", getProject);
 
-router.post("/", upload.array("files", 5000), createProject);
+// Admin only
+router.post("/", requireAuth, upload.array("files", 5000));
 
-router.delete("/:slug", deleteProject);
+router.delete("/:slug", requireAuth, deleteProject);
 
-router.put("/:slug/files", upload.array("files", 5000), replaceProjectFiles);
+router.put("/:slug", requireAuth, updateProject);
 
-router.put("/:slug", updateProject);
+router.put(
+  "/:slug/files",
+  requireAuth,
+  upload.array("files", 5000),
+  replaceProjectFiles,
+);
 
 export default router;

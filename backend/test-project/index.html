@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DLM WALKIN WARDROBE</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+
+<link rel="preload" href="script.js?v=1770101323636" as="script"/>
+<script src="lib/tdvplayer.js?v=1770101323636"></script>
+
+<!-- ✅ Font Awesome Icon Library -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<script>
+var player;
+
+function loadTour(){
+    if(player) return;
+
+    var settings = new TDV.PlayerSettings();
+    settings.set(TDV.PlayerSettings.CONTAINER, document.getElementById('viewer'));
+    settings.set(TDV.PlayerSettings.SCRIPT_URL, 'script.js?v=1770101323636');
+
+    window.tdvplayer = player = TDV.PlayerAPI.create(settings);
+
+    player.bindOnObject('rootPlayer','start',function(){
+        setMediaByIndex(0);
+    },player,true);
+}
+
+function onLoad(){ loadTour(); }
+
+function getRootPlayer(){
+    return window.tdvplayer ? window.tdvplayer.getById('rootPlayer') : null;
+}
+
+function setMediaByIndex(index){
+    var root = getRootPlayer();
+    if(root) root.setMainMediaByIndex(index);
+}
+
+function setMediaByName(name){
+    var root = getRootPlayer();
+    if(root) root.setMainMediaByName(name);
+}
+
+function toggleCabinetMenu(){
+    document.getElementById("cabinetMenu").classList.toggle("open");
+}
+</script>
+
+<style>
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+}
+
+#viewer{
+    background:#fff;
+    position:absolute;
+    width:100%;
+    height:100%;
+}
+
+/* Floating */
+.tour-controls{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+    z-index:999999;
+}
+
+/* Main Button */
+.tour-btn{
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.85);
+    color:#fff;
+    border:none;
+    font-size:22px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 20px rgba(0,0,0,0.35);
+    position:relative;
+}
+
+/* Tooltip */
+.tour-btn[data-tooltip]:hover::after{
+    content: attr(data-tooltip);
+    position:absolute;
+    right:70px;
+    white-space:nowrap;
+    background:rgba(0,0,0,0.85);
+    color:white;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:12px;
+    opacity:1;
+    transform:translateY(-50%);
+    top:50%;
+}
+
+/* Cabinet submenu */
+.cabinet-menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    opacity:0;
+    transform:translateY(20px);
+    pointer-events:none;
+    transition:0.3s ease;
+}
+
+.cabinet-menu.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+/* Color Swatches */
+.color-btn{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border:3px solid white;
+    cursor:pointer;
+    box-shadow:0 6px 14px rgba(0,0,0,0.4);
+}
+
+/* Cabinet Colors */
+.color1{ background:#e6d3b3; }
+.color2{ background:#d2b48c; }
+.color3{ background:#8b5e3c; }
+.color4{ background:#4b2e1e; }
+
+/* 📱 Mobile Button Scaling */
+@media (max-width: 768px){
+
+    .tour-btn{
+        width:60px;
+        height:60px;
+        font-size:26px;
+    }
+
+    .color-btn{
+        width:45px;
+        height:45px;
+    }
+
+    .tour-controls{
+        gap:16px;
+        bottom:28px;
+        right:20px;
+    }
+
+}
+
+</style>
+</head>
+
+<body onload="onLoad()">
+
+<div id="viewer"></div>
+
+<div class="tour-controls">
+
+    <!-- Cabinet Expanded Menu -->
+    <div id="cabinetMenu" class="cabinet-menu">
+
+        <div class="color-btn color1"
+        title="01-G1-M1"
+        onclick="setMediaByName('01-G1-M1')"></div>
+
+        <div class="color-btn color2"
+        title="01-G2-M1"
+        onclick="setMediaByName('01-G2-M1')"></div>
+
+        <div class="color-btn color3"
+        title="01-G1-M2"
+        onclick="setMediaByName('01-G1-M2')"></div>
+
+        <div class="color-btn color4"
+        title="01-G2-M2"
+        onclick="setMediaByName('01-G2-M2')"></div>
+
+    </div>
+
+    <!-- ✅ Cabinet Button with Icon + Tooltip -->
+    <button class="tour-btn"
+        data-tooltip="Cabinet color option"
+        onclick="toggleCabinetMenu()">
+        <i class="fa-solid fa-warehouse"></i>
+    </button>
+
+    <!-- Home -->
+    <button class="tour-btn"
+        data-tooltip="Home"
+        onclick="setMediaByIndex(0)">
+        <i class="fa-solid fa-house"></i>
+    </button>
+
+</div>
+
+</body>
+</html>

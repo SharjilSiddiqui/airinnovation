@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import fsSync from "node:fs";
 import path from "node:path";
 import slugify from "slugify";
+import unzipper from "unzipper";
 
 import { prisma } from "../config/database";
 import {
@@ -57,6 +58,7 @@ export async function getProject(req: Request, res: Response) {
 
 export async function createProject(req: Request, res: Response) {
   let slug: string | undefined;
+  let stagingPath: string | null = null;
 
   try {
     const {
@@ -75,9 +77,17 @@ export async function createProject(req: Request, res: Response) {
       });
     }
 
-    if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+    if (!req.files || !Array.isArray(req.files) || req.files.length !== 1) {
       return res.status(400).json({
-        message: "Project files are required",
+        message: "Please upload exactly one ZIP file",
+      });
+    }
+
+    const uploadedFile = req.files[0];
+
+    if (!uploadedFile.originalname.toLowerCase().endsWith(".zip")) {
+      return res.status(400).json({
+        message: "Project file must be a ZIP archive",
       });
     }
 
@@ -101,49 +111,208 @@ export async function createProject(req: Request, res: Response) {
       });
     }
 
+    /*
+     * ---------------------------------------------------------
+     * 1. Create temporary staging directory
+     * ---------------------------------------------------------
+     */
+
+    stagingPath = await createProjectStagingDirectory(slug);
+
+    /*
+     * ---------------------------------------------------------
+     * 2. Extract ZIP
+     * ---------------------------------------------------------
+     */
+
+    await new Promise<void>((resolve, reject) => {
+      const readStream = fsSync.createReadStream(uploadedFile.path);
+
+      const extractStream = unzipper.Extract({
+        path: stagingPath!,
+      });
+
+      readStream.on("error", reject);
+      extractStream.on("error", reject);
+      extractStream.on("close", resolve);
+
+      readStream.pipe(extractStream);
+    });
+
+    /*
+     * ZIP is no longer needed.
+     */
+
+    await fs.rm(uploadedFile.path, {
+      force: true,
+    });
+
+    /*
+     * ---------------------------------------------------------
+     * 3. Find index.html
+     * ---------------------------------------------------------
+     */
+
+    async function findEntryFile(directory: string): Promise<string | null> {
+      const entries = await fs.readdir(directory, {
+        withFileTypes: true,
+      });
+
+      for (const entry of entries) {
+        const fullPath = path.join(directory, entry.name);
+
+        if (entry.isFile() && entry.name.toLowerCase() === "index.html") {
+          return fullPath;
+        }
+
+        if (entry.isDirectory()) {
+          const result = await findEntryFile(fullPath);
+
+          if (result) {
+            return result;
+          }
+        }
+      }
+
+      return null;
+    }
+
+    const entryPath = await findEntryFile(stagingPath);
+
+    if (!entryPath) {
+      throw new Error('The uploaded ZIP does not contain an "index.html" file');
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * 4. Normalize project root
+     * ---------------------------------------------------------
+     *
+     * Example:
+     *
+     * staging/
+     *   05-Walin lnk fiile/
+     *     index.html
+     *     script.js
+     *     media/
+     *
+     * becomes:
+     *
+     * staging/
+     *   index.html
+     *   script.js
+     *   media/
+     */
+
+    const relativeEntryPath = path.relative(stagingPath, entryPath);
+
+    const entryDirectory = path.dirname(relativeEntryPath);
+
+    if (entryDirectory !== ".") {
+      const wrapperPath = path.join(stagingPath, entryDirectory);
+
+      const wrapperEntries = await fs.readdir(wrapperPath);
+
+      /*
+       * Move everything from the wrapper directory
+       * directly into staging.
+       */
+      for (const entry of wrapperEntries) {
+        const source = path.join(wrapperPath, entry);
+        const destination = path.join(stagingPath, entry);
+
+        await fs.rename(source, destination);
+      }
+
+      /*
+       * Remove now-empty wrapper directories.
+       */
+      await fs.rm(wrapperPath, {
+        recursive: true,
+        force: true,
+      });
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * 5. Verify index.html
+     * ---------------------------------------------------------
+     */
+
+    const finalEntryPath = path.join(stagingPath, "index.html");
+
+    if (!fsSync.existsSync(finalEntryPath)) {
+      throw new Error(
+        'The uploaded ZIP could not be prepared with "index.html" at its root',
+      );
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * 6. Verify extracted files
+     * ---------------------------------------------------------
+     */
+
+    const mediaPath = path.join(stagingPath, "media");
+
+    if (fsSync.existsSync(mediaPath)) {
+      console.log("VR media directory detected:", mediaPath);
+    } else {
+      console.warn(
+        "Warning: uploaded project does not contain a media directory",
+      );
+    }
+
+    /*
+     * Count extracted files for debugging.
+     */
+
+    async function countFiles(directory: string): Promise<number> {
+      let count = 0;
+
+      const entries = await fs.readdir(directory, {
+        withFileTypes: true,
+      });
+
+      for (const entry of entries) {
+        const fullPath = path.join(directory, entry.name);
+
+        if (entry.isFile()) {
+          count++;
+        } else if (entry.isDirectory()) {
+          count += await countFiles(fullPath);
+        }
+      }
+
+      return count;
+    }
+
+    const extractedFileCount = await countFiles(stagingPath);
+
+    console.log(`Extracted ${extractedFileCount} files for project "${slug}"`);
+
+    /*
+     * ---------------------------------------------------------
+     * 7. Move into permanent storage
+     * ---------------------------------------------------------
+     */
+
     const projectStoragePath = await ensureProjectStorage(slug);
 
-    const files = req.files as Express.Multer.File[];
+    await fs.rm(projectStoragePath, {
+      recursive: true,
+      force: true,
+    });
 
-    const paths = Array.isArray(req.body.paths)
-      ? req.body.paths
-      : [req.body.paths];
+    await fs.rename(stagingPath, projectStoragePath);
 
-    if (paths.length !== files.length) {
-      return res.status(400).json({
-        message: "Each uploaded file must have a corresponding path",
-      });
-    }
+    stagingPath = null;
 
-    for (let index = 0; index < files.length; index++) {
-      const file = files[index];
-      const relativePath = paths[index];
-
-      if (!relativePath) {
-        throw new Error("Missing file path");
-      }
-
-      const normalizedPath = String(relativePath)
-        .replace(/\\/g, "/")
-        .replace(/^\/+/, "");
-
-      const destination = path.resolve(projectStoragePath, normalizedPath);
-
-      const storageRoot = path.resolve(projectStoragePath);
-
-      if (
-        destination !== storageRoot &&
-        !destination.startsWith(storageRoot + path.sep)
-      ) {
-        throw new Error("Invalid file path");
-      }
-
-      await fs.mkdir(path.dirname(destination), {
-        recursive: true,
-      });
-
-      await fs.rename(file.path, destination);
-    }
+    /*
+     * ---------------------------------------------------------
+     * 8. Create database record
+     * ---------------------------------------------------------
+     */
 
     const project = await prisma.project.create({
       data: {
@@ -155,12 +324,17 @@ export async function createProject(req: Request, res: Response) {
         category,
         featured: featured === "true" || featured === true,
         projectPath: `vr-projects/${slug}`,
+        entryFile: "index.html",
       },
     });
 
     return res.status(201).json(project);
   } catch (error) {
-    console.error(error);
+    console.error("Failed to create project:", error);
+
+    if (stagingPath) {
+      await removeProjectStagingDirectory(stagingPath).catch(() => {});
+    }
 
     if (slug) {
       await removeProjectStorage(slug).catch(() => {});

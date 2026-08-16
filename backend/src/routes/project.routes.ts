@@ -20,7 +20,7 @@ router.get("/", getProjects);
 router.get("/:slug", getProject);
 
 // Admin only
-router.post("/", requireAuth, upload.array("files", 5000));
+router.post("/", requireAuth, upload.array("files", 5000), createProject);
 
 router.delete("/:slug", requireAuth, deleteProject);
 
